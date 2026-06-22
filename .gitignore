@@ -3,3 +3,4 @@ build/
 .env
 social_backend/uploads/*
 !social_backend/uploads/.gitkeep
+social_frontend/.env

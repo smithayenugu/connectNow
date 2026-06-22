@@ -45,8 +45,8 @@ function Profile() {
     if (!loggedInUserId || !userId || loggedInUserId === userId) return;
     try {
       const [sentRes, receivedRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/sent/${loggedInUserId}`),
-        axios.get(`http://localhost:5000/api/connection-request/received/${loggedInUserId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${loggedInUserId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${loggedInUserId}`)
       ]);
       const sentReq = sentRes.data.find(r => r.toUserId === userId) || null;
       const receivedReq = receivedRes.data.find(r => r.fromUserId === userId) || null;
@@ -60,8 +60,8 @@ function Profile() {
   const loadConnectionCounts = async () => {
     try {
       const [receivedRes, sentRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/received/${userId}`),
-        axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`)
       ]);
       const acceptedReceived = receivedRes.data
         .filter(r => r.status === 'accepted' && r.fromUserId)
@@ -89,7 +89,7 @@ function Profile() {
 
     setLoading(true);
     setError('');
-    axios.get(`http://localhost:5000/user/${userId}`)
+    axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${userId}`)
       .then(res => {
         setUser(res.data.user);
         setLoading(false);
@@ -115,8 +115,8 @@ function Profile() {
     setConnectionsError('');
     try {
       const [receivedRes, sentRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/received/${userId}`),
-        axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`)
       ]);
 
       const acceptedReceived = receivedRes.data
@@ -136,7 +136,7 @@ function Profile() {
 
       const users = await Promise.all(
         connectionIds.map(id =>
-          axios.get(`http://localhost:5000/user/${id}`)
+          axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${id}`)
             .then(res => res.data.user)
             .catch(() => null)
         )
@@ -175,14 +175,14 @@ function Profile() {
     setPendingLoading(true);
     setPendingError('');
     try {
-      const res = await axios.get(`http://localhost:5000/api/connection-request/received/${userId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`);
       const pending = res.data.filter(r => r.status === 'pending');
       setPendingRequests(pending);
 
       const userIds = [...new Set(pending.map(r => r.fromUserId))];
       const users = await Promise.all(
         userIds.map(id =>
-          axios.get(`http://localhost:5000/user/${id}`)
+          axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${id}`)
             .then(res => res.data.user)
             .catch(() => null)
         )
@@ -203,7 +203,7 @@ function Profile() {
 
   const handleAcceptPending = async (requestId) => {
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${requestId}/accept`);
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${requestId}/accept`);
       await loadPendingRequests();
       await refreshConnectionCounts();
       if (showConnections) {
@@ -217,7 +217,7 @@ function Profile() {
 
   const handleRejectPending = async (requestId) => {
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${requestId}/reject`);
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${requestId}/reject`);
       await loadPendingRequests();
     } catch (error) {
       console.error('Error rejecting pending request:', error);
@@ -228,7 +228,7 @@ function Profile() {
   useEffect(() => {
     // fetch posts for this user
     setPostsLoading(true);
-    axios.get(`http://localhost:5000/api/posts/user/${userId}`)
+    axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/user/${userId}`)
       .then(res => {
         const postData = res.data || [];
         setPosts(postData);
@@ -274,8 +274,8 @@ function Profile() {
     if (!loggedInUserId || !userId || loggedInUserId === userId) return;
     try {
       const [sentRes, receivedRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/sent/${loggedInUserId}`),
-        axios.get(`http://localhost:5000/api/connection-request/received/${loggedInUserId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${loggedInUserId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${loggedInUserId}`)
       ]);
       const sentReq = sentRes.data.find(r => r.toUserId === userId) || null;
       const receivedReq = receivedRes.data.find(r => r.fromUserId === userId) || null;
@@ -289,8 +289,8 @@ function Profile() {
   const refreshConnectionCounts = async () => {
     try {
       const [receivedRes, sentRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/received/${userId}`),
-        axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`)
       ]);
       const acceptedReceived = receivedRes.data
         .filter(r => r.status === 'accepted' && r.fromUserId)
@@ -308,7 +308,7 @@ function Profile() {
   const handleSendRequest = async () => {
     setMyRequest({ status: 'sending' });
     try {
-      const response = await axios.post('http://localhost:5000/api/connection-request', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request`, {
         fromUserId: loggedInUserId,
         toUserId: userId
       });
@@ -336,7 +336,7 @@ function Profile() {
   const handleAcceptRequest = async () => {
     if (!theirRequest?._id) return;
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${theirRequest._id}/accept`);
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${theirRequest._id}/accept`);
       await refreshConnectionState();
       await refreshConnectionCounts();
     } catch (error) {
@@ -348,7 +348,7 @@ function Profile() {
   const handleRejectRequest = async () => {
     if (!theirRequest?._id) return;
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${theirRequest._id}/reject`);
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${theirRequest._id}/reject`);
       await refreshConnectionState();
     } catch (error) {
       console.error('Error rejecting request:', error.response?.data || error.message);
@@ -358,7 +358,7 @@ function Profile() {
 
   const handleRemoveConnection = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${userId}/remove`, {
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${userId}/remove`, {
         userId: loggedInUserId
       });
       await refreshConnectionState();
@@ -372,7 +372,7 @@ function Profile() {
   const handleCancelRequest = async () => {
     if (!myRequest?._id) return;
     try {
-      await axios.post(`http://localhost:5000/api/connection-request/${myRequest._id}/cancel`, {
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${myRequest._id}/cancel`, {
         userId: loggedInUserId
       });
       setMyRequest(null);
@@ -386,8 +386,8 @@ function Profile() {
   const handleLike = async (postId) => {
     const liked = likedPosts[postId];
     const url = liked
-      ? `http://localhost:5000/api/posts/unlike/${postId}`
-      : `http://localhost:5000/api/posts/like/${postId}`;
+      ? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/unlike/${postId}`
+      : `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/like/${postId}`;
 
     try {
       const response = await axios.post(url, { userId: loggedInUserId });
@@ -412,7 +412,7 @@ function Profile() {
     if (!commentText.trim()) return;
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/posts/comment/${postId}`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}`, {
         text: commentText.trim(),
         userId: loggedInUserId,
       });
@@ -439,7 +439,7 @@ function Profile() {
     if (!editingCommentText.trim()) return;
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/posts/comment/${postId}/${commentId}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}/${commentId}`, {
         text: editingCommentText.trim(),
         userId: loggedInUserId,
       });
@@ -456,7 +456,7 @@ function Profile() {
     if (!window.confirm('Delete this comment?')) return;
 
     try {
-      const response = await axios.delete(`http://localhost:5000/api/posts/comment/${postId}/${commentId}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}/${commentId}`, {
         data: { userId: loggedInUserId },
       });
       const updatedPost = response.data;
@@ -473,7 +473,7 @@ function Profile() {
   const handleDeletePost = async (postId) => {
     if (!window.confirm('Are you sure you want to delete this post?')) return;
     try {
-      const res = await axios.delete(`http://localhost:5000/api/posts/${postId}`, {
+      const res = await axios.delete(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/${postId}`, {
         data: { userId: loggedInUserId }
       });
       setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
@@ -488,7 +488,7 @@ function Profile() {
   const handleUpdatePost = async (postId) => {
     try {
       // Update text fields
-      const response = await axios.put(`http://localhost:5000/api/posts/${postId}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/${postId}`, {
         title: editedPostTitle,
         content: editedPostContent
       });
@@ -498,13 +498,13 @@ function Profile() {
       if (postPictureFile) {
         const formData = new FormData();
         formData.append('postPicture', postPictureFile);
-        await axios.post(`http://localhost:5000/api/posts/${postId}/picture`, formData, {
+        await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/${postId}/picture`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
         // Reload posts to get updated picture
-        const updatedPosts = await axios.get(`http://localhost:5000/api/posts/user/${userId}`);
+        const updatedPosts = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/user/${userId}`);
         setPosts(updatedPosts.data);
       }
       
@@ -548,7 +548,7 @@ function Profile() {
   const handleUpdateProfile = async () => {
     try {
       // Update text fields
-      const response = await axios.put(`http://localhost:5000/api/user/${userId}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/user/${userId}`, {
         name: editedName,
         email: editedEmail,
         phone: editedPhone
@@ -559,13 +559,13 @@ function Profile() {
       if (profilePictureFile) {
         const formData = new FormData();
         formData.append('profilePicture', profilePictureFile);
-        await axios.post(`http://localhost:5000/api/user/${userId}/profile-picture`, formData, {
+        await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/user/${userId}/profile-picture`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
         // Reload user data to get updated profile picture
-        const updatedUser = await axios.get(`http://localhost:5000/user/${userId}`);
+        const updatedUser = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${userId}`);
         setUser(updatedUser.data.user);
       }
       
@@ -584,7 +584,7 @@ function Profile() {
           {user.profilePicture ? (
             <div className="profile-avatar profile-avatar-large">
               <img
-                src={`http://localhost:5000/uploads/${user.profilePicture}`}
+                src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${user.profilePicture}`}
                 alt="Profile"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -667,7 +667,7 @@ function Profile() {
                         <span className="connection-avatar" aria-hidden="true">
                           {conn.profilePicture ? (
                             <img
-                              src={`http://localhost:5000/uploads/${conn.profilePicture}`}
+                              src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conn.profilePicture}`}
                               alt=""
                               onError={(event) => {
                                 event.currentTarget.style.display = 'none';
@@ -876,12 +876,12 @@ function Profile() {
                     <>
                       {post.file.includes('.mp4') ? (
                         <video width="100%" height="100%" controls style={{ objectFit: 'cover' }}>
-                          <source src={`http://localhost:5000/uploads/${post.file}`} type="video/mp4" />
+                          <source src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`} type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
                       ) : (
                         <img
-                          src={`http://localhost:5000/uploads/${post.file}`}
+                          src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
                           alt="Post Media"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
@@ -931,7 +931,7 @@ function Profile() {
                             {comment.userProfilePicture || comment.profilePicture ? (
                               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
                               <img
-                                src={`http://localhost:5000/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+                                src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
                                 alt={comment.username || 'User'}
                                 className="comment-avatar"
                                 onError={(e) => {
@@ -1042,12 +1042,12 @@ function Profile() {
               <div style={{ textAlign: 'center', margin: '20px 0' }}>
                 {selectedPost.file.includes('.mp4') ? (
                   <video width="90%" height="auto" controls>
-                    <source src={`http://localhost:5000/uploads/${selectedPost.file}`} type="video/mp4" />
+                    <source src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
                   <img
-                    src={`http://localhost:5000/uploads/${selectedPost.file}`}
+                    src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
                     alt="Post Media"
                     style={{ maxWidth: '90%', maxHeight: '60vh', borderRadius: '16px' }}
                   />

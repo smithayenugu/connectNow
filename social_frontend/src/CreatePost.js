@@ -40,7 +40,7 @@ function CreatePost() {
 				}
 
 		axios
-			.post("http://localhost:5000/api/posts", formData)
+			.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts`, formData)
 			.then((response) => {
 				setNewPost({ title: "", content: "", file: null });
 				setIsSubmitting(false);

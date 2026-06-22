@@ -10,7 +10,7 @@ function MyPost({ userId }) {
     if (!userId) return;
     setLoading(true);
     setError('');
-    axios.get(`http://localhost:5000/api/posts/user/${userId}`)
+    axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/user/${userId}`)
       .then(res => {
         setPosts(res.data);
         setLoading(false);
@@ -36,12 +36,12 @@ function MyPost({ userId }) {
             {post.file && (
               post.file.includes('.mp4') ? (
                 <video width="100%" controls style={{ maxWidth: '100%', borderRadius: '10px', marginTop: '10px' }}>
-                  <source src={`http://localhost:5000/uploads/${post.file}`} type="video/mp4" />
+                  <source src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               ) : (
                 <img
-                  src={`http://localhost:5000/uploads/${post.file}`}
+                  src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
                   alt={post.title}
                   style={{ maxWidth: '100%', borderRadius: '10px', marginTop: '10px' }}
                 />
@@ -59,7 +59,7 @@ function MyPost({ userId }) {
                       {comment.userProfilePicture || comment.profilePicture ? (
                         <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
                         <img
-                          src={`http://localhost:5000/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+                          src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
                           alt={comment.username || 'User'}
                           className="comment-avatar"
                           onError={(e) => {

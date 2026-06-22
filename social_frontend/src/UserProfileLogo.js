@@ -54,7 +54,7 @@ const UserProfileLogo = ({ isLoggedIn, userName, userId, onLogout }) => {
     const loadAvatar = async () => {
       if (!isLoggedIn || !userId) return;
       try {
-        const res = await fetch(`http://localhost:5000/user/${userId}`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${userId}`);
         if (!res.ok) return;
         const data = await res.json();
         setProfilePicture(data?.user?.profilePicture || null);
@@ -77,7 +77,7 @@ const UserProfileLogo = ({ isLoggedIn, userName, userId, onLogout }) => {
       >
         {profilePicture ? (
           <img
-            src={`http://localhost:5000/uploads/${profilePicture}`}
+            src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${profilePicture}`}
             alt="Profile"
             style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
             onError={(e) => {

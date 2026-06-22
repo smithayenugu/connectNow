@@ -55,7 +55,7 @@ function Post({ isSidebarOpen }) {
 		setSearchError("");
 		setSearchResults([]);
 		try {
-			const res = await axios.get(`http://localhost:5000/search-users?username=${encodeURIComponent(searchInput)}`);
+			const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/search-users?username=${encodeURIComponent(searchInput)}`);
 			setSearchResults(res.data.users || []);
 		} catch (err) {
 			setSearchError("No users found or error searching.");
@@ -66,7 +66,7 @@ function Post({ isSidebarOpen }) {
 
   useEffect(() => {
 	axios
-	  .get(`http://localhost:5000/api/posts/others/${userId}`)
+	  .get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/others/${userId}`)
 	  .then((response) => {
 		// Backend returns userProfilePicture for other users + others' posts.
 		setPosts(response.data);
@@ -76,8 +76,8 @@ function Post({ isSidebarOpen }) {
 		uniqueUserIds.forEach(otherUserId => {
 		  if (otherUserId && otherUserId !== userId) {
 			Promise.all([
-			  axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`),
-			  axios.get(`http://localhost:5000/api/connection-request/received/${userId}`)
+			  axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`),
+			  axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`)
 			]).then(([sentRes, receivedRes]) => {
 			  const sentReq = sentRes.data.find(r => r.toUserId === otherUserId);
 			  const receivedReq = receivedRes.data.find(r => r.fromUserId === otherUserId);
@@ -121,7 +121,7 @@ function Post({ isSidebarOpen }) {
   const handleSendRequest = async (toUserId) => {
 	setConnStatusMap(prev => ({ ...prev, [toUserId]: 'sending' }));
 	try {
-		const response = await axios.post('http://localhost:5000/api/connection-request', {
+		const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request`, {
 			fromUserId: userId,
 			toUserId
 		});
@@ -143,13 +143,13 @@ function Post({ isSidebarOpen }) {
 const handleCancelRequest = async (toUserId) => {
   try {
     // First fetch the sent request to get its ID
-    const sentRes = await axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`);
+    const sentRes = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`);
     const sentReq = sentRes.data.find(r => r.toUserId === toUserId && r.status === 'pending');
     if (!sentReq) {
       setConnStatusMap(prev => ({ ...prev, [toUserId]: '' }));
       return;
     }
-    await axios.post(`http://localhost:5000/api/connection-request/${sentReq._id}/cancel`, {
+    await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${sentReq._id}/cancel`, {
       userId
     });
     setConnStatusMap(prev => ({ ...prev, [toUserId]: '' }));
@@ -162,8 +162,8 @@ const handleCancelRequest = async (toUserId) => {
   const handleLike = (postId) => {
   const liked = likedPosts[postId];
   const url = liked
-	? `http://localhost:5000/api/posts/unlike/${postId}`
-	: `http://localhost:5000/api/posts/like/${postId}`;
+	? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/unlike/${postId}`
+	: `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/like/${postId}`;
   axios
 	.post(url, { userId })
 	.then((response) => {
@@ -179,8 +179,8 @@ const handleCancelRequest = async (toUserId) => {
 const handleSave = (postId) => {
   const saved = savedPosts[postId];
   const url = saved
-	? `http://localhost:5000/api/posts/unsave/${postId}`
-	: `http://localhost:5000/api/posts/save/${postId}`;
+	? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/unsave/${postId}`
+	: `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/save/${postId}`;
   axios
 	.post(url, { userId })
 	.then((response) => {
@@ -200,8 +200,8 @@ const openShareModal = async (post) => {
   setShareError("");
   try {
     const [receivedRes, sentRes] = await Promise.all([
-      axios.get(`http://localhost:5000/api/connection-request/received/${userId}`),
-      axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`)
+      axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`),
+      axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`)
     ]);
     const acceptedReceived = receivedRes.data.filter(r => r.status === 'accepted' && r.fromUserId).map(r => r.fromUserId);
     const acceptedSent = sentRes.data.filter(r => r.status === 'accepted' && r.toUserId).map(r => r.toUserId);
@@ -211,7 +211,7 @@ const openShareModal = async (post) => {
     } else {
       const users = await Promise.all(
         connectionIds.map(id =>
-          axios.get(`http://localhost:5000/user/${id}`).then(res => res.data.user).catch(() => null)
+          axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${id}`).then(res => res.data.user).catch(() => null)
         )
       );
       setShareConnections(users.filter(Boolean).map(u => ({ userId: u.userId, name: u.name || 'Unknown', profilePicture: u.profilePicture || '' })));
@@ -225,7 +225,7 @@ const openShareModal = async (post) => {
 
 const shareToConnection = async (friend, post) => {
   try {
-    await axios.post('http://localhost:5000/api/chat', {
+    await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat`, {
       from: userId,
       to: friend.userId,
       text: `Check out this post: ${post.title}`,
@@ -249,7 +249,7 @@ const shareToConnection = async (friend, post) => {
 		if (!commentText.trim()) return;
 
 		axios
-			.post(`http://localhost:5000/api/posts/comment/${postId}`, {
+			.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}`, {
 				text: commentText,
 				userId,
 			})
@@ -282,7 +282,7 @@ const shareToConnection = async (friend, post) => {
 		if (!editingCommentText.trim()) return;
 
 		axios
-			.put(`http://localhost:5000/api/posts/comment/${postId}/${commentId}`, {
+			.put(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}/${commentId}`, {
 				text: editingCommentText.trim(),
 				userId,
 			})
@@ -305,7 +305,7 @@ const shareToConnection = async (friend, post) => {
 		if (!window.confirm("Delete this comment?")) return;
 
 		axios
-			.delete(`http://localhost:5000/api/posts/comment/${postId}/${commentId}`, {
+			.delete(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}/${commentId}`, {
 				data: { userId },
 			})
 			.then((response) => {
@@ -429,7 +429,7 @@ const shareToConnection = async (friend, post) => {
 					{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 						<img
-							src={`http://localhost:5000/uploads/${post.userProfilePicture}`}
+							src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
 							alt="User"
 							className="post-avatar"
 							onError={(e) => {
@@ -459,7 +459,7 @@ const shareToConnection = async (friend, post) => {
 								{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 										<img
-											src={`http://localhost:5000/uploads/${post.userProfilePicture}`}
+											src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
 											alt="User"
 											className="post-avatar"
 											onError={(e) => {
@@ -495,14 +495,14 @@ const shareToConnection = async (friend, post) => {
 									{post.file.includes(".mp4") ? (
 										<video width="280" height="200" controls style={{ maxHeight: '200px', borderRadius: '10px' }}>
 											<source
-												src={`http://localhost:5000/uploads/${post.file}`}
+												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
 												type="video/mp4"
 											/>
 											Your browser does not support the video tag.
 										</video>
 									) : (
 										<img
-											src={`http://localhost:5000/uploads/${post.file}`}
+											src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
 											alt="Post Media"
 											style={{ maxHeight: '200px', maxWidth: '100%', borderRadius: '10px', objectFit: 'cover' }}
 										/>
@@ -599,7 +599,7 @@ const shareToConnection = async (friend, post) => {
 												{comment.userProfilePicture || comment.profilePicture ? (
                           <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
 													<img
-														src={`http://localhost:5000/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+														src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
 														alt={comment.username || 'User'}
 														className="comment-avatar"
 														onError={(e) => {
@@ -711,14 +711,14 @@ const shareToConnection = async (friend, post) => {
 								{selectedPost.file.includes(".mp4") ? (
 									<video width="90%" height="auto" controls>
 										<source
-											src={`http://localhost:5000/uploads/${selectedPost.file}`}
+											src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
 											type="video/mp4"
 										/>
 										Your browser does not support the video tag.
 									</video>
 								) : (
 									<img
-										src={`http://localhost:5000/uploads/${selectedPost.file}`}
+										src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
 										alt="Post Media"
 										style={{ maxWidth: '90%', maxHeight: '60vh', borderRadius: '16px' }}
 									/>
@@ -770,7 +770,7 @@ const shareToConnection = async (friend, post) => {
 									<div key={conn.userId} className="connection-item" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'flex-start' }} onClick={() => shareToConnection(conn, selectedPost)}>
 										<span className="connection-avatar" aria-hidden="true">
 											{conn.profilePicture ? (
-												<img src={`http://localhost:5000/uploads/${conn.profilePicture}`} alt="" style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+												<img src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conn.profilePicture}`} alt="" style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                           onError={(event) => {
                             event.currentTarget.style.display = 'none';
                             if (event.currentTarget.nextElementSibling) {

@@ -13,14 +13,14 @@ function ConnectionRequests() {
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
-    axios.get(`http://localhost:5000/api/connection-request/received/${userId}`)
+    axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`)
       .then(async res => {
         const pending = res.data.filter(r => r.status === 'pending');
         setRequests(pending);
         // Fetch user details for all senders
         const ids = pending.map(r => r.fromUserId);
         if (ids.length > 0) {
-          const userDetails = await Promise.all(ids.map(id => axios.get(`http://localhost:5000/user/${id}`).then(u => u.data.user).catch(() => null)));
+          const userDetails = await Promise.all(ids.map(id => axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${id}`).then(u => u.data.user).catch(() => null)));
           const map = {};
           userDetails.forEach(u => { if (u) map[u.userId] = u; });
           setUserMap(map);
@@ -34,7 +34,7 @@ function ConnectionRequests() {
   }, [userId]);
 
   const handleAction = (id, action) => {
-    axios.post(`http://localhost:5000/api/connection-request/${id}/${action}`)
+    axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/${id}/${action}`)
       .then(res => {
         setRequests(prev => prev.filter(r => r._id !== id));
       })
@@ -73,7 +73,7 @@ function ConnectionRequests() {
                     <span className="connection-avatar" aria-hidden="true">
                       {sender && sender.profilePicture ? (
                         <img
-                          src={`http://localhost:5000/uploads/${sender.profilePicture}`}
+                          src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${sender.profilePicture}`}
                           alt=""
                           onError={(event) => {
                             event.currentTarget.style.display = 'none';

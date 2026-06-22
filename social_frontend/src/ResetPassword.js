@@ -17,7 +17,7 @@ function ResetPassword() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/reset-password/${token}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/reset-password/${token}`);
         if (res.data.valid) {
           setValid(true);
         } else {
@@ -50,7 +50,7 @@ function ResetPassword() {
     setError('');
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/reset-password/${token}`, { password });
+      const res = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/reset-password/${token}`, { password });
       setMessage(res.data.message || 'Password reset successful!');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {

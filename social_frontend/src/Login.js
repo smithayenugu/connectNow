@@ -12,7 +12,7 @@ const Login = ({ setIsLoggedIn, setUserName, setUserId, setSelectedTab }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/login", { email, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/login`, { email, password });
       if (response.data && response.data.message === "Success") {
         setIsLoggedIn(true);
         setUserName(response.data.user && response.data.user.name ? response.data.user.name : "");
@@ -30,7 +30,7 @@ const Login = ({ setIsLoggedIn, setUserName, setUserId, setSelectedTab }) => {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await axios.post("http://localhost:5000/auth/google", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/auth/google`, {
         token: credentialResponse.credential,
       });
       if (response.data && response.data.message === "Success") {

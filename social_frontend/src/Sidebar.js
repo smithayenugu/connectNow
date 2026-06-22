@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     if (!userId) return;
     const fetchUnreadCount = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/chat/conversations/${userId}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat/conversations/${userId}`);
         const conversations = res.data.conversations || [];
         const count = conversations.filter(conv => (conv.unreadCount || 0) > 0).length;
         setUnreadUsersCount(count);

@@ -15,7 +15,7 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/register", { name, email, password, phone, userId });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/register`, { name, email, password, phone, userId });
       if (response.data && response.data.message === "User registered successfully!") {
         navigate("/login");
       } else {
@@ -41,7 +41,7 @@ const SignUp = () => {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await axios.post("http://localhost:5000/auth/google", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/auth/google`, {
         token: credentialResponse.credential,
       });
       if (response.data && response.data.message === "Success") {

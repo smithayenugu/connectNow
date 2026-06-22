@@ -24,8 +24,8 @@ function Connections() {
 
     try {
       const [receivedRes, sentRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/connection-request/received/${userId}`),
-        axios.get(`http://localhost:5000/api/connection-request/sent/${userId}`)
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/received/${userId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/connection-request/sent/${userId}`)
       ]);
 
       const acceptedReceived = receivedRes.data
@@ -46,7 +46,7 @@ function Connections() {
       const users = await Promise.all(
         connectionIds.map(id =>
           axios
-            .get(`http://localhost:5000/user/${id}`)
+            .get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/user/${id}`)
             .then(res => res.data.user)
             .catch(() => null)
         )
@@ -113,7 +113,7 @@ function Connections() {
                   <span className="connection-avatar" aria-hidden="true">
                     {conn.profilePicture ? (
                       <img
-                        src={`http://localhost:5000/uploads/${conn.profilePicture}`}
+                        src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conn.profilePicture}`}
                         alt=""
                         onError={(event) => {
                           event.currentTarget.style.display = 'none';

@@ -46,7 +46,7 @@ function Chat() {
     setConvosLoading(true);
     setConvosError('');
     try {
-      const res = await axios.get(`http://localhost:5000/api/chat/conversations/${userId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat/conversations/${userId}`);
       setConversations(res.data.conversations || []);
     } catch (err) {
       console.error('Error loading conversations:', err);
@@ -92,7 +92,7 @@ function Chat() {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.get(`http://localhost:5000/api/chat?user1=${userId}&user2=${selectedFriendId}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat?user1=${userId}&user2=${selectedFriendId}`);
       setMessages(res.data.messages || []);
     } catch {
       setError('Failed to load messages.');
@@ -105,7 +105,7 @@ function Chat() {
   const markAsSeen = useCallback(async () => {
     if (!userId || !selectedFriendId) return;
     try {
-      await axios.post('http://localhost:5000/api/chat/seen', {
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat/seen`, {
         userId,
         partnerId: selectedFriendId
       });
@@ -145,7 +145,7 @@ function Chat() {
     if (!input.trim() || !selectedFriendId) return;
 
     try {
-      await axios.post('http://localhost:5000/api/chat', {
+      await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat`, {
         from: userId,
         to: selectedFriendId,
         text: input,
@@ -153,7 +153,7 @@ function Chat() {
       });
 
       const [msgRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/chat?user1=${userId}&user2=${selectedFriendId}`),
+        axios.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat?user1=${userId}&user2=${selectedFriendId}`),
         loadConversations(),
       ]);
 
@@ -215,7 +215,7 @@ function Chat() {
   const handleSaveEdit = async (messageId) => {
     if (!editText.trim()) return;
     try {
-      await axios.put(`http://localhost:5000/api/chat/${messageId}`, {
+      await axios.put(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat/${messageId}`, {
         text: editText.trim(),
         userId
       });
@@ -251,7 +251,7 @@ function Chat() {
 
   const handleConfirmDelete = async (messageId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/chat/${messageId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/chat/${messageId}`, {
         data: { userId }
       });
       setDeleteConfirmId(null);
@@ -359,7 +359,7 @@ function Chat() {
                 <div className="conversation-avatar">
                   {conv.partnerProfilePicture ? (
                     <img
-                      src={`http://localhost:5000/uploads/${conv.partnerProfilePicture}`}
+                      src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conv.partnerProfilePicture}`}
                       alt="Partner"
                       style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                       onError={(e) => {
@@ -406,7 +406,7 @@ function Chat() {
       return (
         <div style={{ position: 'relative', width: '34px', height: '34px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
           <img
-            src={`http://localhost:5000/uploads/${msg.senderProfilePicture}`}
+            src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${msg.senderProfilePicture}`}
             alt="Sender"
             style={{ width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
             onError={(e) => {
@@ -457,7 +457,7 @@ function Chat() {
               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   className="chat-header-avatar-img"
-                  src={`http://localhost:5000/uploads/${selectedFriendProfilePicture}`}
+                  src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedFriendProfilePicture}`}
                   alt="Partner"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';

@@ -23,7 +23,7 @@ function SavedPosts() {
 		}
 
 		axios
-			.get(`http://localhost:5000/api/posts/saved/${userId}`)
+			.get(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/saved/${userId}`)
 			.then((response) => {
 				setPosts(response.data);
 				setLoading(false);
@@ -46,8 +46,8 @@ function SavedPosts() {
 	const handleLike = (postId) => {
 		const liked = likedPosts[postId];
 		const url = liked
-			? `http://localhost:5000/api/posts/unlike/${postId}`
-			: `http://localhost:5000/api/posts/like/${postId}`;
+			? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/unlike/${postId}`
+			: `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/like/${postId}`;
 		axios
 			.post(url, { userId })
 			.then((response) => {
@@ -65,7 +65,7 @@ function SavedPosts() {
 		if (!commentText.trim()) return;
 
 		axios
-			.post(`http://localhost:5000/api/posts/comment/${postId}`, {
+			.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/posts/comment/${postId}`, {
 				text: commentText,
 				userId,
 			})
@@ -135,7 +135,7 @@ function SavedPosts() {
 										{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 											<img
-												src={`http://localhost:5000/uploads/${post.userProfilePicture}`}
+												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
 												alt="User"
 												className="post-avatar"
 												onError={(e) => {
@@ -165,7 +165,7 @@ function SavedPosts() {
 										{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 											<img
-												src={`http://localhost:5000/uploads/${post.userProfilePicture}`}
+												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
 												alt="User"
 												className="post-avatar"
 												onError={(e) => {
@@ -201,14 +201,14 @@ function SavedPosts() {
 										{post.file.includes(".mp4") ? (
 											<video width="280" height="130" controls style={{ maxHeight: '130px', borderRadius: '10px' }}>
 												<source
-													src={`http://localhost:5000/uploads/${post.file}`}
+													src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
 													type="video/mp4"
 												/>
 												Your browser does not support the video tag.
 											</video>
 										) : (
 											<img
-												src={`http://localhost:5000/uploads/${post.file}`}
+												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
 												alt="Post Media"
 												style={{ maxHeight: '130px', maxWidth: '100%', borderRadius: '10px', objectFit: 'cover' }}
 											/>
@@ -249,7 +249,7 @@ function SavedPosts() {
 														{comment.userProfilePicture || comment.profilePicture ? (
                               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
 															<img
-																src={`http://localhost:5000/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+																src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
 																alt={comment.username || 'User'}
 																className="comment-avatar"
 																onError={(e) => {
@@ -318,14 +318,14 @@ function SavedPosts() {
 								{selectedPost.file.includes(".mp4") ? (
 									<video width="90%" height="auto" controls>
 										<source
-											src={`http://localhost:5000/uploads/${selectedPost.file}`}
+											src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
 											type="video/mp4"
 										/>
 										Your browser does not support the video tag.
 									</video>
 								) : (
 									<img
-										src={`http://localhost:5000/uploads/${selectedPost.file}`}
+										src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
 										alt="Post Media"
 										style={{ maxWidth: '90%', maxHeight: '60vh', borderRadius: '16px' }}
 									/>
