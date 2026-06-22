@@ -47,8 +47,6 @@ const ChatMessage = mongoose.model('ChatMessage', chatSchema);
 // --- Chat Endpoints ---
 // Get all unique conversations for a user (list of other users they've chatted with)
 app.get('/api/chat/conversations/:userId', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   try {
     const { userId } = req.params;
     console.log('GET /api/chat/conversations', { userId });
@@ -120,8 +118,6 @@ app.get('/api/chat/conversations/:userId', async (req, res) => {
 
 // Get messages between two users
 app.get('/api/chat', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   const { user1, user2 } = req.query;
   console.log('GET /api/chat', { user1, user2 });
   if (!user1 || !user2) return res.json({ messages: [] });
@@ -157,8 +153,6 @@ app.get('/api/chat', async (req, res) => {
 
 // Send a message
 app.post('/api/chat', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   const { from, to, text, replyPost } = req.body;
   console.log('POST /api/chat', { from, to, text, replyPost });
   if (!from || !to || !text) return res.status(400).json({ error: 'Missing fields' });
@@ -175,8 +169,6 @@ app.post('/api/chat', async (req, res) => {
 
 // Edit a message (only the sender can edit)
 app.put('/api/chat/:messageId', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   try {
     const { messageId } = req.params;
     const { text, userId } = req.body;
@@ -213,8 +205,6 @@ app.put('/api/chat/:messageId', async (req, res) => {
 
 // Delete a message (soft delete - only the sender can delete)
 app.delete('/api/chat/:messageId', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   try {
     const { messageId } = req.params;
     const { userId } = req.body;
@@ -248,8 +238,6 @@ app.delete('/api/chat/:messageId', async (req, res) => {
 
 // Mark messages as seen when user opens a conversation
 app.post('/api/chat/seen', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Credentials', 'true');
   try {
     const { userId, partnerId } = req.body;
     if (!userId || !partnerId) {
@@ -1003,4 +991,5 @@ app.delete('/api/posts/:postId', async (req, res) => {
     res.status(500).json({ error: 'Error deleting post', details: error.message });
   }
 });
+
 
