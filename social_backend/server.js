@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 
 // CORS must come BEFORE all routes
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'https://connect-now-bice.vercel.app'],
   credentials: true
 }));
 
