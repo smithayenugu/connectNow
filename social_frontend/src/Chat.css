@@ -1,0 +1,350 @@
+/* Chat message options menu */
+.chat-message-stack.mine {
+  position: relative;
+}
+
+/* Anchor the menu to the message bubble itself */
+.chat-message-bubble.mine {
+  position: relative;
+  padding-right: 28px;
+}
+
+.chat-message-menu-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+  line-height: 0;
+}
+
+.chat-message-menu-trigger {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.75;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.chat-message-menu-trigger:hover,
+.chat-message-menu-wrap:focus-within .chat-message-menu-trigger {
+  color: #3b82f6;
+  opacity: 1;
+}
+
+:root:not([data-theme="light"]) .chat-message-menu-trigger {
+  color: #9ca3af;
+}
+
+:root:not([data-theme="light"]) .chat-message-menu-trigger:hover,
+:root:not([data-theme="light"]) .chat-message-menu-wrap:focus-within .chat-message-menu-trigger {
+  color: #818cf8;
+}
+
+.chat-message-menu {
+  position: absolute;
+  bottom: 28px;
+  right: 0;
+  min-width: 112px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 20;
+}
+
+.chat-message-menu button {
+  border: none;
+  background: transparent;
+  color: #111827;
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.chat-message-menu button:hover {
+  background: #eef2ff;
+  color: #3b82f6;
+}
+
+.chat-message-menu .chat-message-menu-danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+:root:not([data-theme="light"]) .chat-message-menu {
+  background: #1e2332;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+:root:not([data-theme="light"]) .chat-message-menu button {
+  color: var(--text);
+}
+
+:root:not([data-theme="light"]) .chat-message-menu button:hover {
+  background: rgba(78, 84, 200, 0.22);
+}
+
+:root:not([data-theme="light"]) .chat-message-menu .chat-message-menu-danger:hover {
+  background: rgba(220, 38, 38, 0.18);
+  color: #f87171;
+}
+
+/* Edit mode */
+.chat-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.chat-edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111827;
+  box-sizing: border-box;
+}
+
+:root:not([data-theme="light"]) .chat-edit-input {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+}
+
+.chat-edit-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.chat-edit-save-btn,
+.chat-edit-cancel-btn,
+.chat-delete-yes-btn,
+.chat-delete-no-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.chat-edit-save-btn,
+.chat-delete-yes-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.chat-edit-save-btn:hover,
+.chat-delete-yes-btn:hover {
+  background: #2563eb;
+}
+
+.chat-edit-cancel-btn,
+.chat-delete-no-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #6b7280;
+}
+
+.chat-edit-cancel-btn:hover,
+.chat-delete-no-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+:root[data-theme="light"] .chat-edit-cancel-btn,
+:root[data-theme="light"] .chat-delete-no-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+:root[data-theme="light"] .chat-edit-cancel-btn:hover,
+:root[data-theme="light"] .chat-delete-no-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Delete confirmation */
+.chat-delete-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.chat-delete-confirm-text {
+  font-size: 0.85rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.chat-delete-confirm-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.chat-delete-yes-btn {
+  background: #ef4444;
+}
+
+.chat-delete-yes-btn:hover {
+  background: #dc2626;
+}
+
+/* Deleted message styling */
+.chat-message-deleted {
+  opacity: 0.6;
+}
+
+.chat-message-deleted-text {
+  font-style: italic;
+  font-size: 0.88rem;
+  color: #9ca3af;
+}
+
+/* Edited indicator */
+.chat-edited-indicator {
+  font-size: 0.6rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Chat inbox search toggle button in header */
+.chat-inbox-search-toggle {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  line-height: 1;
+}
+
+.chat-inbox-search-toggle:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+:root[data-theme="light"] .chat-inbox-search-toggle:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+/* Chat inbox search bar */
+.chat-inbox-search {
+  padding: 10px 14px;
+  background: inherit;
+  border-bottom: 1px solid var(--border);
+  animation: slideDown 0.15s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-inbox-search-input {
+  width: 100%;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  outline: none;
+  font-size: 0.85rem;
+  background: rgba(0,0,0,0.20);
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+:root[data-theme="light"] .chat-inbox-search-input {
+  background: #f7f8fc;
+  border: 1.5px solid #d1d5db;
+  color: #111827;
+}
+
+.chat-inbox-search-input::placeholder {
+  color: var(--muted);
+}
+
+.chat-inbox-search-input:focus {
+  border-color: var(--primary);
+}
+
+/* Unread count badge on "Messages" header */
+.chat-inbox-unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  padding: 0 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Unread conversation item highlighting */
+.conversation-unread {
+  background: rgba(59, 130, 246, 0.06);
+}
+
+:root[data-theme="light"] .conversation-unread {
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.conversation-unread .conversation-name {
+  font-weight: 700;
+}
+
+.conversation-unread .conversation-last-msg {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Unread badge on conversation avatar */
+.conversation-avatar {
+  position: relative;
+}
+
+.conversation-unread-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  box-shadow: 0 0 0 2px var(--bg0);
+  z-index: 2;
+}
