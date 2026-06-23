@@ -135,7 +135,7 @@ function SavedPosts() {
 										{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 											<img
-												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
+												src={`${post.userProfilePicture}`}
 												alt="User"
 												className="post-avatar"
 												onError={(e) => {
@@ -165,7 +165,7 @@ function SavedPosts() {
 										{post.userProfilePicture ? (
                       <div style={{ position: 'relative', width: '34px', height: '34px', flexShrink: 0 }}>
 											<img
-												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.userProfilePicture}`}
+												src={`${post.userProfilePicture}`}
 												alt="User"
 												className="post-avatar"
 												onError={(e) => {
@@ -201,14 +201,14 @@ function SavedPosts() {
 										{post.file.includes(".mp4") ? (
 											<video width="280" height="130" controls style={{ maxHeight: '130px', borderRadius: '10px' }}>
 												<source
-													src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
+													src={`${post.file}`}
 													type="video/mp4"
 												/>
 												Your browser does not support the video tag.
 											</video>
 										) : (
 											<img
-												src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
+												src={`${post.file}`}
 												alt="Post Media"
 												style={{ maxHeight: '130px', maxWidth: '100%', borderRadius: '10px', objectFit: 'cover' }}
 											/>
@@ -249,7 +249,7 @@ function SavedPosts() {
 														{comment.userProfilePicture || comment.profilePicture ? (
                               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
 															<img
-																src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+																src={`${comment.userProfilePicture || comment.profilePicture}`}
 																alt={comment.username || 'User'}
 																className="comment-avatar"
 																onError={(e) => {
@@ -318,14 +318,14 @@ function SavedPosts() {
 								{selectedPost.file.includes(".mp4") ? (
 									<video width="90%" height="auto" controls>
 										<source
-											src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
+											src={`${selectedPost.file}`}
 											type="video/mp4"
 										/>
 										Your browser does not support the video tag.
 									</video>
 								) : (
 									<img
-										src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
+										src={`${selectedPost.file}`}
 										alt="Post Media"
 										style={{ maxWidth: '90%', maxHeight: '60vh', borderRadius: '16px' }}
 									/>

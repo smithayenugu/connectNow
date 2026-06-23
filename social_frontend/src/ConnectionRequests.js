@@ -73,7 +73,7 @@ function ConnectionRequests() {
                     <span className="connection-avatar" aria-hidden="true">
                       {sender && sender.profilePicture ? (
                         <img
-                          src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${sender.profilePicture}`}
+                          src={`${sender.profilePicture}`}
                           alt=""
                           onError={(event) => {
                             event.currentTarget.style.display = 'none';

@@ -77,7 +77,7 @@ const UserProfileLogo = ({ isLoggedIn, userName, userId, onLogout }) => {
       >
         {profilePicture ? (
           <img
-            src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${profilePicture}`}
+            src={`${profilePicture}`}
             alt="Profile"
             style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
             onError={(e) => {

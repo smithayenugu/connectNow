@@ -113,7 +113,7 @@ function Connections() {
                   <span className="connection-avatar" aria-hidden="true">
                     {conn.profilePicture ? (
                       <img
-                        src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conn.profilePicture}`}
+                        src={`${conn.profilePicture}`}
                         alt=""
                         onError={(event) => {
                           event.currentTarget.style.display = 'none';

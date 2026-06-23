@@ -359,7 +359,7 @@ function Chat() {
                 <div className="conversation-avatar">
                   {conv.partnerProfilePicture ? (
                     <img
-                      src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conv.partnerProfilePicture}`}
+                      src={`${conv.partnerProfilePicture}`}
                       alt="Partner"
                       style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                       onError={(e) => {
@@ -406,7 +406,7 @@ function Chat() {
       return (
         <div style={{ position: 'relative', width: '34px', height: '34px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
           <img
-            src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${msg.senderProfilePicture}`}
+            src={`${msg.senderProfilePicture}`}
             alt="Sender"
             style={{ width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
             onError={(e) => {
@@ -457,7 +457,7 @@ function Chat() {
               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   className="chat-header-avatar-img"
-                  src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedFriendProfilePicture}`}
+                  src={`${selectedFriendProfilePicture}`}
                   alt="Partner"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';

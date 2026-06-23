@@ -584,7 +584,7 @@ function Profile() {
           {user.profilePicture ? (
             <div className="profile-avatar profile-avatar-large">
               <img
-                src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${user.profilePicture}`}
+                src={`${user.profilePicture}`}
                 alt="Profile"
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -667,7 +667,7 @@ function Profile() {
                         <span className="connection-avatar" aria-hidden="true">
                           {conn.profilePicture ? (
                             <img
-                              src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${conn.profilePicture}`}
+                              src={`${conn.profilePicture}`}
                               alt=""
                               onError={(event) => {
                                 event.currentTarget.style.display = 'none';
@@ -876,12 +876,12 @@ function Profile() {
                     <>
                       {post.file.includes('.mp4') ? (
                         <video width="100%" height="100%" controls style={{ objectFit: 'cover' }}>
-                          <source src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`} type="video/mp4" />
+                          <source src={`${post.file}`} type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
                       ) : (
                         <img
-                          src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${post.file}`}
+                          src={`${post.file}`}
                           alt="Post Media"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
@@ -931,7 +931,7 @@ function Profile() {
                             {comment.userProfilePicture || comment.profilePicture ? (
                               <div style={{ position: 'relative', width: '28px', height: '28px', display: 'inline-flex', flexShrink: 0 }}>
                               <img
-                                src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${comment.userProfilePicture || comment.profilePicture}`}
+                                src={`${comment.userProfilePicture || comment.profilePicture}`}
                                 alt={comment.username || 'User'}
                                 className="comment-avatar"
                                 onError={(e) => {
@@ -1042,12 +1042,12 @@ function Profile() {
               <div style={{ textAlign: 'center', margin: '20px 0' }}>
                 {selectedPost.file.includes('.mp4') ? (
                   <video width="90%" height="auto" controls>
-                    <source src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`} type="video/mp4" />
+                    <source src={`${selectedPost.file}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
                   <img
-                    src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/uploads/${selectedPost.file}`}
+                    src={`${selectedPost.file}`}
                     alt="Post Media"
                     style={{ maxWidth: '90%', maxHeight: '60vh', borderRadius: '16px' }}
                   />

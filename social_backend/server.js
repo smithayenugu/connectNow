@@ -266,12 +266,7 @@ app.post('/api/chat/seen', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+// File uploads are now handled by Cloudinary; no local uploads directory needed.
 
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
@@ -282,13 +277,21 @@ const transporter = nodemailer.createTransport({
     },
   });
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDir);
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'connectnow',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4'],
+  },
 });
 
 const upload = multer({ storage: storage });
@@ -477,9 +480,9 @@ app.post('/api/user/:userId/profile-picture', upload.single('profilePicture'), a
     if (!user) return res.status(404).json({ error: 'User not found' });
     
     if (req.file) {
-      user.profilePicture = req.file.filename;
+      user.profilePicture = req.file.path;
       await user.save();
-      res.json({ profilePicture: req.file.filename });
+      res.json({ profilePicture: req.file.path });
     } else {
       res.status(400).json({ error: 'No file uploaded' });
     }
@@ -512,16 +515,11 @@ app.post('/api/posts/:postId/picture', upload.single('postPicture'), async (req,
     if (!post) return res.status(404).json({ error: 'Post not found' });
     
     if (req.file) {
-      // Delete old file if exists
-      if (post.file) {
-        const oldFilePath = path.join(uploadsDir, post.file);
-        if (fs.existsSync(oldFilePath)) {
-          fs.unlinkSync(oldFilePath);
-        }
-      }
-      post.file = req.file.filename;
+      // Old file is on Cloudinary; skip local deletion.
+      // (Optional: delete from Cloudinary via cloudinary.uploader.destroy if you want to avoid storage bloat.)
+      post.file = req.file.path;
       await post.save();
-      res.json({ file: req.file.filename });
+      res.json({ file: req.file.path });
     } else {
       res.status(400).json({ error: 'No file uploaded' });
     }
@@ -607,7 +605,7 @@ app.get('/api/posts', async (req, res) => {
 app.post('/api/posts', upload.single('file'), async (req, res) => {
     try {
         const { title, content, userId } = req.body;
-        const file = req.file ? req.file.filename : undefined;
+        const file = req.file ? req.file.path : undefined;
 
         if (!title || !content || !userId) {
             return res.status(400).json({ error: 'Title, content, and userId are required fields' });
@@ -976,13 +974,7 @@ app.delete('/api/posts/:postId', async (req, res) => {
       return res.status(403).json({ error: 'You can only delete your own posts' });
     }
 
-    // Delete uploaded media file if present
-    if (post.file) {
-      const filePath = path.join(uploadsDir, post.file);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    }
+    // Old file is on Cloudinary; skip local deletion.
 
     await Post.findByIdAndDelete(postId);
     res.json({ success: true });
@@ -991,5 +983,6 @@ app.delete('/api/posts/:postId', async (req, res) => {
     res.status(500).json({ error: 'Error deleting post', details: error.message });
   }
 });
+
 
 
