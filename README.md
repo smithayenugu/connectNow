@@ -29,6 +29,54 @@ A production-grade social networking application with real-time messaging, user 
 
 ---
 
+## 📸 Screenshots
+
+### Login & Authentication
+![Sign In](screenshots/login.png)
+*Email/Password and Google OAuth login options*
+
+### Main Feed
+![Feed](screenshots/feed.png)
+*Browse posts from connected users with likes, comments, and shares*
+
+### Create Post
+![Create Post](screenshots/create-post.png)
+*Share your thoughts with optional image uploads*
+
+### Direct Messaging
+![Messages](screenshots/messaging.png)
+*Real-time messaging with edit and delete capabilities*
+
+### User Profile
+![Profile](screenshots/profile.png)
+*Customize your profile with picture*
+
+### Save Posts
+![Search](screenshots/save-posts.png)
+*Save other's posts*
+
+### Chat
+![Search](screenshots/chat.png)
+*Chat with your friends*
+
+### Comments
+![Search](screenshots/comments.png)
+*Comment on other's posts and share you thoughts on the posts*
+
+### Connections
+![Search](screenshots/connections.png)
+*View your connections , see their profile , message them*
+
+### Light Theme
+![Search](screenshots/light-theme.png)
+*Set the theme according to your vibe*
+
+### Connection Requests
+![Search](screenshots/connection-request.png)
+*See all the connection request you got and extend your friend circle*
+
+---
+
 ## 🛠 Tech Stack
 
 ### Frontend
