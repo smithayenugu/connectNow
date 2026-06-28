@@ -133,34 +133,38 @@ Connections
    cd connectNow
    ```
 
-2. **Frontend Setup**
+2. **Frontend Setup** (React on Vercel)
    ```bash
-   cd frontend
+   cd social_frontend
    npm install
    npm start
    ```
+   The app will run on `http://localhost:3000`
 
-3. **Backend Setup**
+3. **Backend Setup** (Node.js/Express on Render)
    ```bash
-   cd backend
+   cd social_backend
    npm install
    ```
 
-4. **Environment Variables** (`.env`)
+4. **Environment Variables** 
+   Create a `.env` file in the `social_backend` folder:
    ```
    PORT=5000
    MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/connectnow
    JWT_SECRET=your_jwt_secret_key
    GOOGLE_CLIENT_ID=your_google_oauth_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
+   NODE_ENV=development
    ```
 
 5. **Start the Backend**
    ```bash
    npm start
    ```
+   The API will run on `http://localhost:5000`
 
-6. Open `http://localhost:3000` in your browser
+6. Open your browser and navigate to `http://localhost:3000`
 
 ---
 
@@ -199,24 +203,38 @@ Connections
 ## 📁 Project Structure
 
 ```
-ConnectNow/
-├── frontend/
+connectNow/
+├── screenshots/             # App screenshots for README
+│   ├── login.png
+│   ├── feed.png
+│   ├── create-post.png
+│   ├── messaging.png
+│   ├── profile.png
+|   ├── save-posts.png
+|   ├── chat.png
+|   ├── comments.png
+|   └── connection-request.png
+|   
+│
+├── social_frontend/         # React Frontend (Deployed on Vercel)
+│   ├── public/              # Static files
 │   ├── src/
 │   │   ├── components/      # Reusable React components
 │   │   ├── pages/           # Page-level components
 │   │   ├── styles/          # CSS files
 │   │   └── App.js           # Main app component
 │   └── package.json
+│   
 │
-├── backend/
-│   ├── models/              # MongoDB schemas
-│   ├── routes/              # API endpoints
-│   ├── controllers/         # Business logic
-│   ├── middleware/          # Auth and validation
-│   ├── config/              # Database config
-│   └── server.js            # Express server
+├── social_backend/          # Node.js/Express Backend (Deployed on Render)
+│   ├── models/              # MongoDB schemas (User, Post, Message, etc.)
+│   ├── router/              # API routes and endpoints
+│   ├── scripts/             # Helper scripts and utilities
+│   ├── server.js            # Express server entry point
+│   ├── package.json
+│   └── package-lock.json
 │
-└── README.md
+└── README.md                # Main project README
 ```
 
 ---
@@ -264,17 +282,7 @@ Or create your own account and start connecting with other users!
 
 ---
 
-## 🤝 Contributing
 
-Contributions are welcome! Feel free to fork this repository and submit a pull request.
-
----
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
----
 
 ## 💬 Questions?
 
