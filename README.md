@@ -224,6 +224,8 @@ connectNow/
 |   ├── save-posts.png
 |   ├── chat.png
 |   ├── comments.png
+|   ├── connections.png
+|   ├── light-theme.png
 |   └── connection-request.png
 |   
 │
