@@ -22,6 +22,7 @@ A production-grade social networking application with real-time messaging, user 
 - **Dark/Light Theme** – Toggle between dark and light modes
 - **Responsive Design** – Fully responsive UI optimized for desktop and mobile
 - **Authentication** – Email/password signup with Google OAuth integration for seamless login
+- **Password Reset** – Email-based forgot password / reset password flow
 
 ### Currently Not Implemented
 - Real-time push notifications (planned for future updates)
@@ -49,6 +50,7 @@ A production-grade social networking application with real-time messaging, user 
 - **Frontend:** Vercel (Next.js/React hosting with automatic deployments)
 - **Backend:** Render (Node.js hosting with environment management)
 - **Database:** MongoDB Atlas (cloud-hosted with connection pooling)
+- **Media:** Cloudinary (cloud-hosted image storage)
 
 ---
 
@@ -97,22 +99,26 @@ Connections
 - Edit and delete capabilities with audit trails
 - Conversation history management
 
-### 2. Database Schema & Relationships
+### 2. Cloud Media Storage Migration
+- Migrated image uploads from local disk storage to Cloudinary, solving the data-loss problem caused by Render's ephemeral filesystem on free-tier deployments
+- Updated both backend (Cloudinary SDK + multer-storage-cloudinary) and frontend (URL handling) to support persistent, CDN-backed image delivery
+
+### 3. Database Schema & Relationships
 - Complex document references between users, posts, and comments
 - Optimized indexes for frequently queried fields (email, userId, postId)
 - Proper handling of one-to-many and many-to-many relationships
 
-### 3. User Authorization
+### 4. User Authorization
 - Role-based access control (users can only edit/delete their own posts and messages)
 - Secure password handling with bcrypt
 - OAuth integration for social login
 
-### 4. Responsive Frontend
+### 5. Responsive Frontend
 - Mobile-optimized layout that works seamlessly across all devices
 - Theme persistence with local storage
 - Smooth navigation with React Router
 
-### 5. Search Functionality
+### 6. Search Functionality
 - User search with case-insensitive matching
 - Efficient database queries for discoverability
 
@@ -124,6 +130,7 @@ Connections
 - Node.js (v14+)
 - npm or yarn
 - MongoDB Atlas account (or local MongoDB)
+- Cloudinary account (free tier)
 
 ### Installation
 
@@ -155,7 +162,11 @@ Connections
    JWT_SECRET=your_jwt_secret_key
    GOOGLE_CLIENT_ID=your_google_oauth_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
-   NODE_ENV=development
+   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+   EMAIL_USER=your_email_for_password_reset
+   EMAIL_PASS=your_email_app_password
    ```
 
 5. **Start the Backend**
@@ -257,6 +268,7 @@ Or create your own account and start connecting with other users!
 ✅ **Input Validation** – Server-side validation of all inputs  
 ✅ **OAuth Integration** – Secure Google login  
 ✅ **Password Reset** – Secure email-based password recovery  
+✅ **CORS Configuration** – Restricted to known frontend origins only
 
 ---
 
@@ -278,7 +290,6 @@ Or create your own account and start connecting with other users!
 - [ ] Post collections and curated feeds
 - [ ] User verification badges
 - [ ] Advanced privacy controls
-- [ ] API rate limiting and analytics
 
 ---
 
